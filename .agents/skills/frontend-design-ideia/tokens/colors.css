@@ -1,0 +1,51 @@
+/* IDE.IA — Color tokens
+   Extracted directly from the source PPTX template (Template Slides IDEIA.pptx).
+   Two greens are used throughout: a mid/leaf green for text, icons and small
+   accents, and a brighter mint green for large fills (section-divider slides,
+   icon badges, chart segments). Everything else is black + white — no other
+   hues appear anywhere in the deck. */
+
+:root {
+  /* Base palette */
+  --green-700: #2f7d3c;   /* derived — the ACCESSIBLE green: 5.10:1 on white, so it carries every
+                             green *text* role (links, eyebrows) and the light-mode button fill */
+  --green-800: #256330;   /* derived — hover step under green-700 (7.23:1 with white) */
+  --green-900: #1c4b25;   /* derived — pressed step (10.08:1 with white) */
+  --green-600: #3FA14C;  /* primary brand green — logo mark, icon strokes, decorative accents.
+                            Only 3.27:1 on white: fine for non-text UI (≥3:1), NOT for body text */
+  --green-400: #80E978;  /* bright mint — section-divider backgrounds, icon badges */
+  --green-200: #B7EFB2;  /* light tint — derived, for subtle fills/backgrounds */
+  --green-100: #E7F9E5;  /* faint tint — derived, for hairline surfaces */
+
+  --black: #000000;
+  --white: #FFFFFF;
+  --gray-900: #1A1A1A;   /* derived near-black for body copy on white (softer than pure black) */
+  --gray-600: #5C5C5C;   /* derived mid gray for secondary/caption text */
+  --gray-200: #E3E3E3;   /* derived hairline/border gray */
+
+  /* Dark deck palette — from the "Proposta Bibliotecas de Componentes" PPTX (technical/
+     proposal decks alternate to this dark mode instead of the light default). */
+  --navy-900: #111A24;     /* dark deck background */
+  --navy-800: #182430;     /* derived, slightly lifted — card panels on navy */
+  --green-legend-dark: #1B4220; /* dark forest green — used for table/legend highlight cells */
+
+  /* Semantic aliases */
+  --brand-primary: var(--green-600);
+  --brand-accent: var(--green-400);
+  --surface-page: var(--white);
+  --surface-inverse: var(--black);
+  --surface-accent: var(--green-400);
+  --surface-dark: var(--navy-900);
+  --surface-dark-card: var(--navy-800);
+  --text-heading: var(--black);
+  --text-heading-inverse: var(--white);
+  --text-body: var(--gray-900);
+  --text-body-inverse: rgba(255, 255, 255, 0.92);
+  --text-caption: var(--gray-600);
+  --text-brand: var(--green-700);        /* green text on light must clear 4.5:1 — green-600 does not */
+  --text-brand-on-dark: var(--green-400);
+  --text-on-accent: var(--gray-900);     /* text sitting on a mint --green-400 band (11.47:1).
+                                            Never set green text on mint — green-600 there is 2.16:1 */
+  --border-hairline: var(--gray-200);
+  --icon-stroke: var(--green-600);
+}

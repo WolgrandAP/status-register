@@ -1,0 +1,6 @@
+/* IDE.IA — Web font loading
+   Montserrat is used as-is (matches source exactly).
+   Mulish substitutes Clear Sans (headings/display) — see typography.css note.
+   Sora substitutes Codec Pro (rare accent word) — see typography.css note. */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Mulish:wght@400;600;700;800;900&family=Sora:wght@400;600;700&display=swap');
