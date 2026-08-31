@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Register — Cronômetro & Histórico de Trabalho</title>
+  <meta name="description" content="Aplicação de cronometragem de produtividade, gerador de comandos /status e histórico diário para squads ágeis.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Institucional com Abas de Navegação -->
+    <header class="app-header">
+      <div class="brand-lockup">
+        <svg class="brand-logo" viewBox="0 0 1080 1080" fill="var(--green-600)" aria-hidden="true">
+          <path d="M551,265.67a58.27,58.27,0,0,1-21.92,0L293,685.32,628.3,403.21ZM797.2,745.47a57.81,57.81,0,0,1,12-20.53l-103-183.18L607.36,724.25A57.64,57.64,0,0,1,620,745.47Zm56.88-263.35a34.19,34.19,0,1,1-34.19,34.18A34.17,34.17,0,0,1,854.08,482.12ZM329.18,310.47A34.19,34.19,0,1,1,295,344.66,34.19,34.19,0,0,1,329.18,310.47ZM394.7,860.29a34.19,34.19,0,1,1-34.19,34.18A34.18,34.18,0,0,1,394.7,860.29ZM239,707.08,497.28,247.81a57.69,57.69,0,1,1,85.41,0l74,131.53L794.28,263.55a57.69,57.69,0,1,1,53.6,36.31,58.91,58.91,0,0,1-10.1-.89l-111,205L841,707.08A57.69,57.69,0,1,1,797.2,782H620a57.7,57.7,0,1,1-44.65-75L689.65,496c.18-.37.38-.74.59-1.1l96-177.15L664.4,420.26a17.76,17.76,0,0,1-2.33,2L281.64,742.34A57.7,57.7,0,1,1,239,707.08Z"/>
+        </svg>
+        <div class="brand-title-wrap">
+          <span class="brand-title">IDE.IA</span>
+          <span class="brand-subtitle">Laboratório de Inteligência</span>
+        </div>
+      </div>
+
+      <!-- Barra de Navegação por Abas -->
+      <nav class="navbar-tabs" role="tablist" aria-label="Navegação principal">
+        <button type="button" id="tab-timer" class="nav-tab active" role="tab" aria-selected="true" aria-controls="view-timer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Cronômetro</span>
+        </button>
+        <button type="button" id="tab-history" class="nav-tab" role="tab" aria-selected="false" aria-controls="view-history">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span>Histórico</span>
+        </button>
+      </nav>
+
+      <div class="header-badge">
+        Engenharia & Squads
+      </div>
+    </header>
+
+    <!-- Conteúdo Principal com Views Alternáveis -->
+    <main class="main-content">
+      
+      <!-- VIEW 1: Cronômetro & Novo Status -->
+      <section id="view-timer" class="app-view active" role="tabpanel" aria-labelledby="tab-timer">
+        <div class="hero-section">
+          <p class="eyebrow">Produtividade & Operação</p>
+          <h1 class="main-title">Registro de Status de Trabalho</h1>
+          <div class="mint-bar" aria-hidden="true"></div>
+          <p class="hero-description">
+            Controle o tempo de dedicação das suas tarefas em tempo real e gere o comando de status padronizado para a squad.
+          </p>
+        </div>
+
+        <!-- Cartão do Cronômetro -->
+        <div class="timer-card" aria-label="Cronômetro">
+          <div id="timer-status-chip" class="timer-status-chip">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="timer-status-text">Inativo</span>
+          </div>
+
+          <div id="timer-display" class="timer-display" aria-live="polite" aria-atomic="true">
+            00:00:00
+          </div>
+
+          <div class="controls-group" role="group" aria-label="Controles do cronômetro">
+            <!-- Botão Iniciar (visível quando IDLE) -->
+            <button type="button" id="btn-start" class="btn btn-primary" aria-label="Iniciar cronômetro">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+              <span>Iniciar</span>
+            </button>
+
+            <!-- Botão Pausar (visível quando RUNNING) -->
+            <button type="button" id="btn-pause" class="btn btn-pause" style="display: none;" aria-label="Pausar cronômetro">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+              <span>Pausar</span>
+            </button>
+
+            <!-- Botão Continuar (visível quando PAUSED) -->
+            <button type="button" id="btn-resume" class="btn btn-primary" style="display: none;" aria-label="Continuar cronômetro">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <polygon points="5,3 19,12 5,21"/>
+              </svg>
+              <span>Continuar</span>
+            </button>
+
+            <!-- Botão Parar (visível quando RUNNING ou PAUSED) -->
+            <button type="button" id="btn-stop" class="btn btn-stop" style="display: none;" aria-label="Parar e gerar status">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14"/>
+              </svg>
+              <span>Parar & Fechar</span>
+            </button>
+
+            <!-- Botão Resetar (visível quando PAUSED) -->
+            <button type="button" id="btn-reset" class="btn btn-secondary" style="display: none;" aria-label="Zerar cronômetro">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <span>Zerar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cartão de Saída / Comando Gerado -->
+        <div id="output-card" class="output-card" aria-label="Comando de status gerado">
+          <div class="output-header">
+            <div class="output-title-group">
+              <span class="eyebrow" style="font-size: 11px;">Comando Formatado</span>
+              <strong style="font-size: 16px; color: var(--black);">Mensagem Pronta para Envio</strong>
+            </div>
+            <span class="header-badge" style="font-size: 11px;">/status</span>
+          </div>
+
+          <div id="command-output" class="output-command-box" tabindex="0" aria-label="Texto do comando /status"></div>
+
+          <div class="output-actions">
+            <button type="button" id="btn-copy" class="btn btn-primary" aria-label="Copiar comando para área de transferência">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span id="btn-copy-text">Copiar</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: Histórico Diário de Status -->
+      <section id="view-history" class="app-view" role="tabpanel" aria-labelledby="tab-history">
+        <div class="hero-section">
+          <p class="eyebrow">Registros & Dailies</p>
+          <h1 class="main-title">Histórico de Status de Trabalho</h1>
+          <div class="mint-bar" aria-hidden="true"></div>
+          <p class="hero-description">
+            Consulte os status gerados em cada dia, copie comandos passados ou faça correções no texto registrado.
+          </p>
+        </div>
+
+        <div class="history-container">
+          <!-- Barra de Navegação por Data -->
+          <div class="history-date-bar">
+            <div class="date-nav-controls">
+              <button type="button" id="btn-prev-day" class="btn-nav-date" aria-label="Dia anterior" title="Dia anterior">
+                &larr; Anterior
+              </button>
+              <input type="date" id="history-date-picker" class="input-date-picker" aria-label="Selecionar data do histórico">
+              <button type="button" id="btn-next-day" class="btn-nav-date" aria-label="Próximo dia" title="Próximo dia">
+                Próximo &rarr;
+              </button>
+              <button type="button" id="btn-today" class="btn btn-secondary btn-today" aria-label="Ir para a data de hoje">
+                Hoje
+              </button>
+            </div>
+            <div id="history-daily-summary" class="daily-meta-badge">
+              0 registros • 0 min
+            </div>
+          </div>
+
+          <!-- Listagem de Cards de Histórico -->
+          <div id="history-list" class="history-list" aria-label="Lista de status do dia">
+            <!-- Renderizado dinamicamente via JS -->
+          </div>
+
+          <!-- Estado Vazio (quando não houver registros na data) -->
+          <div id="history-empty" class="history-empty-state" style="display: none;">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            <h3 class="empty-title">Nenhum status registrado nesta data</h3>
+            <p class="empty-desc">
+              Não encontramos sessões de trabalho salvas para o dia selecionado.
+            </p>
+            <button type="button" id="btn-go-to-timer" class="btn btn-primary" style="margin-top: 8px;">
+              Iniciar Novo Status no Cronômetro
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal de Formulário de Status -->
+    <div id="modal-status" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-window">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Encerramento de Sessão</p>
+            <h2 id="modal-title" class="title" style="font-size: 22px; margin-top: 4px;">Registrar Status de Trabalho</h2>
+          </div>
+          <button type="button" id="btn-close-modal" class="modal-close-btn" aria-label="Fechar modal">&times;</button>
+        </div>
+
+        <form id="status-form" class="status-form" novalidate>
+          <p class="form-section-title">Informações Obrigatórias</p>
+          
+          <div class="form-grid">
+            <!-- Squad -->
+            <div class="form-group">
+              <label for="field-squad" class="field-label">
+                <span>Squad</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <select id="field-squad" name="squad" class="select" required>
+                <option value="" disabled selected>Selecione a squad...</option>
+                <option value="TDF">TDF</option>
+                <option value="LIBEROS">LIBEROS</option>
+                <option value="Gov/AE">Gov/AE</option>
+                <option value="Qualidade">Qualidade</option>
+                <option value="IA">IA</option>
+                <option value="Dados">Dados</option>
+                <option value="DFe">DFe</option>
+                <option value="Sistemas Lab">Sistemas Lab</option>
+                <option value="Manutenção">Manutenção</option>
+                <option value="Syndex">Syndex</option>
+                <option value="DPI2-IFPB">DPI2-IFPB</option>
+              </select>
+            </div>
+
+            <!-- Issue -->
+            <div class="form-group">
+              <label for="field-issue" class="field-label">
+                <span>Issue</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <input type="text" id="field-issue" name="issue" class="input" placeholder="ex: PROJ-102" required>
+            </div>
+
+            <!-- Módulo -->
+            <div class="form-group">
+              <label for="field-modulo" class="field-label">
+                <span>Módulo</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <input type="text" id="field-modulo" name="modulo" class="input" placeholder="ex: Autenticação, Relatórios" required>
+            </div>
+
+            <!-- Percentual -->
+            <div class="form-group">
+              <label for="field-percentual" class="field-label">
+                <span>Percentual</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <select id="field-percentual" name="percentual" class="select" required>
+                <option value="" disabled selected>Selecione o progresso...</option>
+                <option value="Menor que 25">Menor que 25</option>
+                <option value="Menor que 50">Menor que 50</option>
+                <option value="Menor que 75">Menor que 75</option>
+                <option value="Menor que 100">Menor que 100</option>
+                <option value="Concluída">Concluída</option>
+              </select>
+            </div>
+
+            <!-- Categoria -->
+            <div class="form-group">
+              <label for="field-categoria" class="field-label">
+                <span>Categoria</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <select id="field-categoria" name="categoria" class="select" required>
+                <option value="" disabled selected>Selecione a categoria...</option>
+                <option value="Desenvolvimento de Produto">Desenvolvimento de Produto</option>
+                <option value="Evolução de Produto">Evolução de Produto</option>
+                <option value="Estudo">Estudo</option>
+                <option value="Administrativa">Administrativa</option>
+                <option value="Gestão">Gestão</option>
+                <option value="Reunião de planning/retrospective/review">Reunião de planning/retrospective/review</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+
+            <!-- Minutos Dedicados -->
+            <div class="form-group">
+              <label for="field-minutos" class="field-label">
+                <span>Minutos Dedicados</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <input type="number" id="field-minutos" name="minutos_dedicados" class="input" min="1" step="1" required>
+              <span class="field-hint">Calculado a partir da sessão cronometrada (editável).</span>
+            </div>
+
+            <!-- Atividades -->
+            <div class="form-group col-span-2">
+              <label for="field-atividades" class="field-label">
+                <span>Atividades</span>
+                <span class="field-tag-req">*obrigatório</span>
+              </label>
+              <textarea id="field-atividades" name="atividades" class="textarea" placeholder="Descreva brevemente as atividades realizadas nesta sessão..." required></textarea>
+            </div>
+          </div>
+
+          <p class="form-section-title">Informações Opcionais</p>
+          
+          <div class="form-grid">
+            <!-- Due Date -->
+            <div class="form-group">
+              <label for="field-due-date" class="field-label">
+                <span>Due Date</span>
+                <span class="field-tag-opt">(opcional)</span>
+              </label>
+              <input type="date" id="field-due-date" name="due_date" class="input">
+            </div>
+
+            <!-- Data Daily -->
+            <div class="form-group">
+              <label for="field-data-daily" class="field-label">
+                <span>Data Daily</span>
+                <span class="field-tag-opt">(opcional)</span>
+              </label>
+              <input type="date" id="field-data-daily" name="data_daily" class="input">
+            </div>
+
+            <!-- Impedimento -->
+            <div class="form-group col-span-2">
+              <label for="field-impedimento" class="field-label">
+                <span>Impedimento</span>
+                <span class="field-tag-opt">(opcional)</span>
+              </label>
+              <input type="text" id="field-impedimento" name="impedimento" class="input" placeholder="Informe se houver bloqueios ou dependências externas...">
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel-modal" class="btn btn-secondary">Cancelar</button>
+            <button type="submit" id="btn-submit-status" class="btn btn-primary">Gerar Status</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification" role="status" aria-live="polite">
+      Comando copiado para a área de transferência!
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="app-footer">
+      <p class="footer-meta">IDE.IA &mdash; Laboratório de Pesquisa e Desenvolvimento em Inteligência Artificial</p>
+      <p>Desenvolvido com padrões de alta fidelidade e aderência ao design system institucional.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
