@@ -1,0 +1,16 @@
+/* IDE.IA — Use the REAL brand fonts instead of the web substitutes.
+   Import order:
+     1. styles.css                    (base tokens: sets substitute families)
+     2. fonts/brand-fonts.css         (loads Urbanist + Olney @font-face)
+     3. fonts/brand-fonts-override.css (this file — repoints the type tokens)
+   Drop this out if you want the Google-Fonts substitutes instead. */
+
+:root {
+  --font-display: 'Urbanist', -apple-system, sans-serif;   /* every heading/display moment (was 'Olney' — wrong: Olney is a rare accent, not the heading face) */
+  --font-body:    'Urbanist', -apple-system, sans-serif;   /* body + labels/eyebrows */
+  --font-accent:  'Urbanist', -apple-system, sans-serif;   /* MUST stay a readable face: in dark mode --font-accent carries card/label/table BODY text */
+}
+
+/* Olney is loaded (brand-fonts.css) but intentionally NOT wired to a token: it is a RARE display
+   accent for the logo wordmark and the occasional accent word only. Apply it explicitly where you
+   want it — e.g. font-family: 'Olney', 'Urbanist', sans-serif — never route body text through it. */

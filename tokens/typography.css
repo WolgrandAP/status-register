@@ -1,0 +1,46 @@
+/* IDE.IA — Type tokens
+   Source deck embeds three type families:
+     - Clear Sans Bold  → slide titles, big display statements ("Template", "OBRIGADA!")
+     - Montserrat / Montserrat Bold → body copy, labels, eyebrows ("EMPRESA", "Pesquisador")
+     - Codec Pro → used once, as a stylised accent word on the researcher-card slide
+
+   Font-substitution notice (flagged to user — see SKILL.md "Fonts — real vs. substitute" section):
+     - Clear Sans is Intel's open font but is NOT distributed on Google Fonts.
+       Substituted with Mulish (open, similar humanist-grotesque proportions,
+       same confident geometric bowls on a/e/s).
+     - Codec Pro is a commercial display face, no free equivalent.
+       Substituted with Sora (geometric display sans, similar weight contrast).
+     - Montserrat is used as-is — it's already a Google Font. */
+
+:root {
+  --font-display: 'Mulish', 'Clear Sans', -apple-system, sans-serif;   /* substitutes Clear Sans Bold */
+  --font-body: 'Montserrat', -apple-system, sans-serif;                /* as source */
+  --font-accent: 'Sora', -apple-system, sans-serif;                    /* substitutes Codec Pro */
+
+  /* Display / titles — Clear Sans Bold in source, always weight 800/900 */
+  --text-display-size: clamp(48px, 6vw, 96px);
+  --text-display-weight: 800;
+  --text-display-line: 1.05;
+  --text-display-tracking: -0.01em;
+
+  --text-title-size: clamp(36px, 4vw, 56px);
+  --text-title-weight: 800;
+  --text-title-line: 1.1;
+
+  /* Body — Montserrat */
+  --text-body-size: 22px;
+  --text-body-weight: 400;
+  --text-body-line: 1.5;
+
+  --text-body-lg-size: 28px;
+  --text-body-lg-weight: 500;
+
+  /* Eyebrow / label — Montserrat Bold, uppercase, letterspaced (e.g. "EMPRESA", "LABORATÓRIO") */
+  --text-eyebrow-size: 18px;
+  --text-eyebrow-weight: 700;
+  --text-eyebrow-tracking: 0.14em;
+
+  /* Caption */
+  --text-caption-size: 16px;
+  --text-caption-weight: 400;
+}
