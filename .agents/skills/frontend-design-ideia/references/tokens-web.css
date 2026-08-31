@@ -1,0 +1,68 @@
+/* IDE.IA — Web-only tokens (INTENTIONAL EXTENSIONS)
+   ---------------------------------------------------------------------------
+   These do NOT come from the source slide decks. The decks are static and
+   define no interactive states, form controls, or web elevation. The values
+   below are derived to be brand-consistent so real UI has states to reach for.
+   Import AFTER styles.css so the base tokens exist. Keep additions minimal —
+   no new hues, no gradients, no shadows in light mode. */
+
+:root {
+  /* Interactive states — light mode.
+     These use green-700, not the green-600 brand hue, and that is deliberate: white text on
+     green-600 is only 3.27:1, which fails WCAG AA (4.5:1) for a button label. green-700 gives
+     5.10:1 and stays unmistakably the brand green. Keep --green-600 for icon strokes, the logo,
+     and other non-text marks, where the 3:1 non-text threshold applies. */
+  --interactive-primary:        var(--green-700);      /* 5.10:1 with white */
+  --interactive-primary-hover:  var(--green-800);      /* 7.23:1 */
+  --interactive-primary-active: var(--green-900);      /* 10.08:1 */
+  --interactive-surface-hover:  var(--green-100);      /* faint tint for row/list hover */
+  --interactive-disabled-bg:    var(--gray-200);
+  --interactive-disabled-fg:    var(--gray-600);
+
+  /* Interactive states — dark mode (mint accent on navy) */
+  --interactive-primary-dark:        var(--green-400);
+  --interactive-primary-dark-hover:  #6ad561;          /* mint, slightly deeper */
+  --interactive-surface-dark-hover:  #1e2c3a;          /* navy-800 lifted */
+
+  /* Focus ring — accessibility, both modes. Square in light, follows radius in dark.
+     green-700 so the ring clears 3:1 against white *and* against the green-100 hover tint. */
+  --focus-ring-color:      var(--green-700);
+  --focus-ring-color-dark: var(--green-400);
+  --focus-ring-width:      2px;
+  --focus-ring-offset:     2px;
+
+  /* Radius — square by default (brand). Web components may use these scoped values:
+     - light mode containers: --radius-none (square, brand rule)
+     - dark mode cards:        --radius-card-dark (20px, from source)
+     - pills are NOT allowed; inputs/buttons stay square in light mode */
+  --radius-control:      var(--radius-none);       /* buttons/inputs, light mode */
+  --radius-control-dark: 10px;                     /* controls inside dark rounded cards */
+
+  /* Elevation — light mode has NO shadow by brand rule; use hairline instead.
+     Dark mode may lift cards subtly. Do not over-shadow. */
+  --elevation-none:      none;
+  --elevation-dark-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  /* Motion — minimal, no bounce (brand rule) */
+  --motion-fast:   150ms;
+  --motion-normal: 200ms;
+  --motion-ease:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout — web breakpoints (deck was fixed 1920×1080; these are web-native) */
+  --bp-sm:  640px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --container-max: 1200px;
+
+  /* Body type scaled for app density (deck body is 22px; web UI reads smaller) */
+  --text-ui-size:       16px;
+  --text-ui-sm-size:    14px;
+  --text-ui-line:       1.5;
+}
+
+/* Standard accessible focus treatment — apply to interactive elements */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}

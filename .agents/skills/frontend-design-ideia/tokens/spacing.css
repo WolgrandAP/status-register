@@ -1,0 +1,32 @@
+/* IDE.IA — Spacing & shape tokens
+   Deck canvas is 1920×1080 (16:9). Slides use generous outer margins with
+   content anchored to a left-aligned column; decorative logo/pattern marks
+   bleed off the top/bottom/right edges. */
+
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+  --space-8: 128px;
+
+  --slide-width: 1920px;
+  --slide-height: 1080px;
+  --slide-margin-x: 120px;
+  --slide-margin-y: 90px;
+
+  /* The light/standard deck (Template Slides IDEIA.pptx) is sharp-edged everywhere — no
+     rounded corners on cards, photos, or dividers; roundness only comes from the logo's
+     node-circles and the light icon set's stroke caps.
+     The dark/technical deck (Proposta Bibliotecas de Componentes.pptx) introduces rounded
+     card panels on its navy background — use --radius-card-dark there. */
+  --radius-none: 0px;
+  --radius-icon-badge: 50%;
+  --radius-card-dark: 20px;
+
+  --icon-stroke-width: 3px;
+  --icon-stroke-width-dark: 6px;
+}

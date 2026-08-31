@@ -1,0 +1,37 @@
+/* IDE.IA — REAL brand fonts (Urbanist family + Olney)
+   ---------------------------------------------------------------------------
+   These are the identity's true typefaces, shipped as installable files here.
+   - Urbanist : primary brand typeface (full weight range, incl. italics) — carries every
+                heading/display moment, body, labels, and (in dark mode) --font-accent text
+   - Olney     : RARE display accent (Olney Light) — logo wordmark + occasional accent word only,
+                 never a whole heading, never body. Applied explicitly (font-family:'Olney'),
+                 not wired to a token, so it can't accidentally land on dark-mode body text.
+
+   NOTE: the design-system tokens (tokens/typography.css) were built from the PPTX
+   deck, which did NOT embed font files, so they substitute Mulish/Montserrat/Sora
+   via Google Fonts. This file loads the REAL fonts locally. To use them, import
+   this file and point --font-display / --font-body / --font-accent at these
+   families (see fonts/brand-fonts-override.css). Paths are relative to this file. */
+
+/* ---- Urbanist (variable-ish family via individual weights) ---- */
+@font-face { font-family:'Urbanist'; font-weight:100; font-style:normal; font-display:swap; src:url('./Urbanist-Thin.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:100; font-style:italic; font-display:swap; src:url('./Urbanist-ThinItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:200; font-style:normal; font-display:swap; src:url('./Urbanist-ExtraLight.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:200; font-style:italic; font-display:swap; src:url('./Urbanist-ExtraLightItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:300; font-style:normal; font-display:swap; src:url('./Urbanist-Light.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:300; font-style:italic; font-display:swap; src:url('./Urbanist-LightItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:400; font-style:normal; font-display:swap; src:url('./Urbanist-Regular.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:400; font-style:italic; font-display:swap; src:url('./Urbanist-Italic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:500; font-style:normal; font-display:swap; src:url('./Urbanist-Medium.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:500; font-style:italic; font-display:swap; src:url('./Urbanist-MediumItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:600; font-style:normal; font-display:swap; src:url('./Urbanist-SemiBold.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:600; font-style:italic; font-display:swap; src:url('./Urbanist-SemiBoldItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:700; font-style:normal; font-display:swap; src:url('./Urbanist-Bold.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:700; font-style:italic; font-display:swap; src:url('./Urbanist-BoldItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:800; font-style:normal; font-display:swap; src:url('./Urbanist-ExtraBold.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:800; font-style:italic; font-display:swap; src:url('./Urbanist-ExtraBoldItalic.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:900; font-style:normal; font-display:swap; src:url('./Urbanist-Black.ttf') format('truetype'); }
+@font-face { font-family:'Urbanist'; font-weight:900; font-style:italic; font-display:swap; src:url('./Urbanist-BlackItalic.ttf') format('truetype'); }
+
+/* ---- Olney (display/accent) ---- */
+@font-face { font-family:'Olney'; font-weight:300; font-style:normal; font-display:swap; src:url('./olney_light.otf') format('opentype'); }
